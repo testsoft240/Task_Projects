@@ -29,6 +29,7 @@ class calculateMAxViewController: UIViewController {
     var invested = ""
     var Profit = Double()
     
+    @IBOutlet weak var stepperCount: UIStepper!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -39,13 +40,33 @@ class calculateMAxViewController: UIViewController {
         Profit = getsellAmt - getBuyAmt
         print("profit amoubt \(Profit)")
         
-        profitAmt.text = String(format: "%.2f", Profit)
+        profitAmt.text = ""
+        
+//        Amount.text =  String(getBuyAmt)
+//        stepperCount.minimumValue = getBuyAmt
+        
+     
     }
 
     @IBAction func calculateBtnClicked(_ sender: Any) {
         totalInvested.text = Amount.text
         CalculateProfit()
     }
+    
+    
+    @IBAction func stepperValueChanged(_ sender: UIStepper) {
+        print("click")
+        var val = stepperCount.value
+        print("get val is \(val) \(val * getBuyAmt)")
+        Amount.text =  String(val * getBuyAmt)
+    }
+    
+    
+//    @objc func stepperValueChanged(_ sender:UIStepper!){
+//        var val = stepperCount.value
+//        print("get val is \(val) \(val * getBuyAmt)")
+//        Amount.text =  String(val)
+//    }
     
     func CalculateProfit(){
         invested = totalInvested.text ?? ""
@@ -54,6 +75,16 @@ class calculateMAxViewController: UIViewController {
         let totalprofit = getTotal * Profit
         
         print("get profit is \(totalprofit)")
+        
+        profitAmt.text = String(format: "%.2f", Profit)
+        
+        if Profit < 0  {
+            profitAmt.textColor = UIColor.red
+            totalProfit.textColor = UIColor.red
+        }else{
+            profitAmt.textColor = UIColor.green
+            totalProfit.textColor = UIColor.green
+        }
         
         totalProfit.text = String(format: "%.2f", totalprofit)
     }
